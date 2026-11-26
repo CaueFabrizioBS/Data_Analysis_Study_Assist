@@ -1,0 +1,335 @@
+<title>Ofensiva de Dados</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: coluna única de app (máx. 640px), cabeçalho com ofensiva/XP, telas trocadas no lugar */
+:root{
+  --bg:#f5f6fb; --surface:#ffffff; --fg:#1b1f33; --muted:#5d6380; --line:#e1e4ef;
+  --accent:#3a4fd6; --accent-soft:#e7eaff; --flame:#e8590c; --flame-soft:#fff0e6;
+  --ok:#1f8a4c; --ok-soft:#e4f6eb; --bad:#c92a2a; --bad-soft:#fdecec; --code:#eef0f7;
+  --f-display:"Space Grotesk",system-ui,sans-serif; --f-body:"Inter",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11131d; --surface:#1a1d2b; --fg:#e8eaf5; --muted:#9aa0bd; --line:#2b3045;
+  --accent:#8c9cff; --accent-soft:#252b4d; --flame:#ff8a3d; --flame-soft:#3a2416;
+  --ok:#5ad08a; --ok-soft:#173326; --bad:#ff7b7b; --bad-soft:#3a1c1c; --code:#232738; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11131d; --surface:#1a1d2b; --fg:#e8eaf5; --muted:#9aa0bd; --line:#2b3045;
+  --accent:#8c9cff; --accent-soft:#252b4d; --flame:#ff8a3d; --flame-soft:#3a2416;
+  --ok:#5ad08a; --ok-soft:#173326; --bad:#ff7b7b; --bad-soft:#3a1c1c; --code:#232738; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:640px;margin:0 auto;padding-block:18px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance}
+button{font:inherit;cursor:pointer}
+button:focus-visible,.chip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+code,pre{font-family:var(--f-mono)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:20px;letter-spacing:-.3px}
+.stats{display:flex;gap:8px}
+.pill{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:600;font-variant-numeric:tabular-nums}
+.pill.flame{color:var(--flame);background:var(--flame-soft);border-color:transparent}
+.pill svg{width:16px;height:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.ring{width:96px;height:96px}
+.ring circle{fill:none;stroke-width:10}
+.ring .bgc{stroke:var(--line)} .ring .fgc{stroke:var(--flame);stroke-linecap:round;transition:stroke-dashoffset .6s}
+.ring text{font-family:var(--f-display);font-weight:700;fill:var(--fg)}
+.lead{color:var(--muted);margin:4px 0 0}
+.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:700;font-family:var(--f-display);font-size:16px;letter-spacing:.2px;background:var(--accent);color:#fff;box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 60%,#000)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 color-mix(in srgb,var(--accent) 60%,#000)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none;transform:none}
+.btn.ghost{background:transparent;color:var(--accent);box-shadow:none;border:2px solid var(--line)}
+.btn.ok{background:var(--ok);box-shadow:0 4px 0 color-mix(in srgb,var(--ok) 60%,#000)}
+.btn.bad{background:var(--bad);box-shadow:0 4px 0 color-mix(in srgb,var(--bad) 60%,#000)}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{flex:1 1 180px}
+.label{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.topic{padding:12px;border:1px solid var(--line);border-radius:14px;min-width:0}
+.topic b{display:block;font-size:14px}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.topic small{color:var(--muted);font-variant-numeric:tabular-nums}
+.heat{display:grid;grid-template-columns:repeat(14,1fr);gap:4px}
+.heat i{aspect-ratio:1;border-radius:4px;background:var(--line)}
+.heat i.l1{background:color-mix(in srgb,var(--flame) 35%,var(--line))}
+.heat i.l2{background:color-mix(in srgb,var(--flame) 65%,var(--line))}
+.heat i.l3{background:var(--flame)}
+.note{font-size:13px;color:var(--muted)}
+/* tela da pergunta */
+.qhead{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.close{border:0;background:transparent;color:var(--muted);font-size:22px;line-height:1;padding:4px 8px;border-radius:8px}
+.prog{flex:1;height:14px;border-radius:99px;background:var(--line);overflow:hidden}
+.prog>i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .35s}
+.tag{display:inline-flex;gap:8px;align-items:center;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:99px}
+.tag.redo{color:var(--flame);background:var(--flame-soft)}
+.qtext{font-size:19px;font-weight:600;line-height:1.4;margin:10px 0 4px}
+.qtext code,.opt code,.fb code{background:var(--code);padding:1px 5px;border-radius:5px;font-size:.9em}
+pre.qcode{background:var(--code);border-radius:12px;padding:12px 14px;font-size:13.5px;overflow-x:auto;margin:10px 0 0}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);color:var(--fg);border-radius:14px;padding:12px 14px;font-size:15px}
+.opt .k{flex:none;width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--muted)}
+.opt span:last-child{min-width:0;overflow-wrap:anywhere}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:16px;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.fb.ok{background:var(--ok-soft)} .fb.bad{background:var(--bad-soft)}
+.fb h3{font-size:18px} .fb.ok h3{color:var(--ok)} .fb.bad h3{color:var(--bad)}
+.fb p{margin:0}
+.gotoguide{font-size:13px;color:var(--muted)}
+.big{font-family:var(--f-display);font-size:44px;font-weight:700;line-height:1}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.grid3 .topic{text-align:center}
+.combo{color:var(--flame);font-weight:700;font-size:13px}
+.status{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.fb{animation:pop .25s ease-out}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Ofensiva de Dados</div>
+    <div class="stats">
+      <div class="pill flame" title="Dias seguidos estudando"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 3 4 5 4 9a4 4 0 0 1-8 0c0-1.3.4-2.3 1-3 .2 1.6 1 2.5 2 2.5 0-2.8-1-5.5 1-8.5zM6.5 13c0 3.6 2.5 7 5.5 7s5.5-3.4 5.5-7c1 1 1.5 2.3 1.5 3.8C19 20 15.9 22 12 22s-7-2-7-5.2c0-1.5.6-2.8 1.5-3.8z"/></svg><span id="streak">0</span></div>
+      <div class="pill" title="XP total"><span id="xp">0</span>&nbsp;XP</div>
+    </div>
+  </header>
+  <main id="app"></main>
+  <p class="status" id="status"></p>
+</div>
+
+<script>
+const GOAL = 15;                       // perguntas por dia
+const LESSON = 12;                     // perguntas por lição
+const BOX_DAYS = [0, 1, 2, 4, 8, 16];  // intervalo da repetição espaçada por caixa
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const md = s => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+const today = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
+const addDays = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+
+let Q = [], byId = {};
+let state = { xp: 0, streak: 0, best: 0, lastDay: null, days: {}, cards: {}, topics: [] };
+let store = null;      // db doc ref ou null
+let saving = Promise.resolve();
+
+/* ---------- persistência ---------- */
+const LS = 'ofensiva-dados-v1';
+function lsLoad(){ try { const v = localStorage.getItem(LS); return v ? JSON.parse(v) : null; } catch { return null; } }
+function lsSave(){ try { localStorage.setItem(LS, JSON.stringify(state)); } catch {} }
+function save(){
+  lsSave();
+  if (!store) return;
+  const body = JSON.parse(JSON.stringify(state));
+  saving = saving.then(() => store.set(body)).catch(() => { $('#status').textContent = 'Não consegui salvar na nuvem agora; o progresso ficou salvo neste navegador.'; });
+}
+async function initStore(){
+  const local = lsLoad(); if (local) state = { ...state, ...local };
+  try {
+    if (!window.claude?.use) return;
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+    const id = user ? await user.id() : null;
+    if (!db || !id) { $('#status').textContent = 'Progresso salvo só neste navegador.'; return; }
+    store = db.doc('data/users/' + id + '/progress');
+    const snap = await Promise.race([store.get(), new Promise((_, r) => setTimeout(() => r('timeout'), 10000))]);
+    if (snap.exists) {
+      const remote = snap.data();
+      // fica com quem tem mais XP (o mais avançado)
+      if (!local || (remote.xp || 0) >= (local.xp || 0)) state = { ...state, ...JSON.parse(JSON.stringify(remote)) };
+      else save();
+    } else if (local) save();
+    $('#status').textContent = 'Progresso sincronizado entre seus aparelhos.';
+    render();
+  } catch { $('#status').textContent = 'Progresso salvo só neste navegador.'; }
+}
+
+/* ---------- lógica ---------- */
+function topicsAll(){ return [...new Set(Q.map(q => q.t))]; }
+function activeTopics(){ return state.topics && state.topics.length ? state.topics : topicsAll(); }
+function shuffle(a){ for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function buildLesson(mode){
+  const t = today(), act = new Set(activeTopics());
+  const pool = Q.filter(q => act.has(q.t));
+  if (mode === 'errors') {
+    const wrong = pool.filter(q => state.cards[q.id] && state.cards[q.id].box <= 1 && state.cards[q.id].seen);
+    return shuffle(wrong).slice(0, LESSON);
+  }
+  const due = shuffle(pool.filter(q => state.cards[q.id] && state.cards[q.id].due <= t));
+  const fresh = shuffle(pool.filter(q => !state.cards[q.id]));
+  const later = pool.filter(q => state.cards[q.id] && state.cards[q.id].due > t).sort((a, b) => state.cards[a.id].due.localeCompare(state.cards[b.id].due));
+  const nNew = Math.max(4, LESSON - due.length);
+  let pick = [...due.slice(0, LESSON - Math.min(nNew, fresh.length)), ...fresh.slice(0, nNew)];
+  if (pick.length < LESSON) pick = pick.concat(later.slice(0, LESSON - pick.length));
+  return shuffle(pick.slice(0, LESSON));
+}
+function grade(q, right){
+  const t = today(), c = state.cards[q.id] || { box: 0 };
+  c.seen = (c.seen || 0) + 1;
+  c.box = right ? Math.min(5, (c.box || 0) + 1) : 1;
+  c.due = right ? addDays(t, BOX_DAYS[c.box]) : t;
+  state.cards[q.id] = c;
+  state.days[t] = (state.days[t] || 0) + 1;
+}
+function bumpStreak(){
+  const t = today();
+  if (state.lastDay === t) return false;
+  state.streak = state.lastDay === addDays(t, -1) ? state.streak + 1 : 1;
+  state.best = Math.max(state.best || 0, state.streak);
+  state.lastDay = t;
+  return true;
+}
+function liveStreak(){ const t = today(); return (state.lastDay === t || state.lastDay === addDays(t, -1)) ? state.streak : 0; }
+
+/* ---------- telas ---------- */
+function header(){ $('#streak').textContent = liveStreak(); $('#xp').textContent = state.xp; }
+
+function render(){
+  header();
+  if (!Q.length) { $('#app').innerHTML = '<div class="card">Carregando perguntas…</div>'; return; }
+  const t = today(), done = state.days[t] || 0, pct = Math.min(1, done / GOAL);
+  const C = 2 * Math.PI * 40;
+  const act = new Set(activeTopics());
+  const pool = Q.filter(q => act.has(q.t));
+  const dueN = pool.filter(q => state.cards[q.id] && state.cards[q.id].due <= t).length;
+  const newN = pool.filter(q => !state.cards[q.id]).length;
+  const errN = pool.filter(q => state.cards[q.id] && state.cards[q.id].box <= 1 && state.cards[q.id].seen).length;
+  const msg = state.lastDay === t ? (done >= GOAL ? 'Meta de hoje batida. Quer adiantar a revisão de amanhã?' : 'Ofensiva garantida hoje. Falta pouco para a meta.')
+            : liveStreak() ? 'Faça uma lição hoje para manter a ofensiva de ' + liveStreak() + ' dia' + (liveStreak() > 1 ? 's' : '') + '.'
+            : 'Comece uma ofensiva nova: uma lição por dia.';
+  const topics = topicsAll().map(tp => {
+    const qs = Q.filter(q => q.t === tp), m = qs.filter(q => (state.cards[q.id]?.box || 0) >= 3).length;
+    return `<div class="topic"><b>${esc(tp)}</b><div class="bar"><i style="width:${Math.round(100 * m / qs.length)}%"></i></div><small>${m} de ${qs.length} dominadas</small></div>`;
+  }).join('');
+  // mapa das últimas 8 semanas (56 dias)
+  let heat = ''; for (let i = 55; i >= 0; i--) { const d = addDays(t, -i), n = state.days[d] || 0; heat += `<i title="${d}: ${n}" class="${n >= GOAL ? 'l3' : n >= 8 ? 'l2' : n ? 'l1' : ''}"></i>`; }
+  $('#app').innerHTML = `
+  <div class="stack">
+    <section class="card hero">
+      <svg class="ring" viewBox="0 0 100 100" role="img" aria-label="${done} de ${GOAL} perguntas hoje">
+        <circle class="bgc" cx="50" cy="50" r="40"/>
+        <circle class="fgc" cx="50" cy="50" r="40" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}" transform="rotate(-90 50 50)"/>
+        <text x="50" y="50" text-anchor="middle" dominant-baseline="central" font-size="22">${Math.min(done, 99)}/${GOAL}</text>
+      </svg>
+      <div><h2 style="font-size:22px">Meta do dia</h2><p class="lead">${esc(msg)}</p></div>
+    </section>
+    <div class="row">
+      <button class="btn" id="go">Começar lição · ${LESSON} perguntas</button>
+      <button class="btn ghost" id="errs" ${errN ? '' : 'disabled'}>Refazer erros (${errN})</button>
+    </div>
+    <p class="note">${dueN} para revisar hoje · ${newN} novas no banco. Perguntas que você erra voltam no mesmo dia; as que acerta voltam em 1, 2, 4, 8 e 16 dias.</p>
+    <section class="card stack">
+      <div class="label">Assuntos da lição</div>
+      <div class="chips" id="chips">${topicsAll().map(tp => `<button class="chip" aria-pressed="${act.has(tp)}" data-t="${esc(tp)}">${esc(tp)}</button>`).join('')}</div>
+    </section>
+    <section class="card stack">
+      <div class="label">Domínio por assunto</div>
+      <div class="topics">${topics}</div>
+    </section>
+    <section class="card stack">
+      <div class="label">Últimas 8 semanas · recorde de ${state.best || 0} dias</div>
+      <div class="heat">${heat}</div>
+    </section>
+  </div>`;
+  $('#go').onclick = () => start('lesson');
+  $('#errs').onclick = () => start('errors');
+  $('#chips').onclick = e => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    const cur = new Set(activeTopics()), tp = b.dataset.t;
+    if (cur.has(tp)) { if (cur.size === 1) return; cur.delete(tp); } else cur.add(tp);
+    state.topics = cur.size === topicsAll().length ? [] : [...cur];
+    save(); render();
+  };
+}
+
+let L = null; // lição atual
+function start(mode){
+  const qs = buildLesson(mode);
+  if (!qs.length) return;
+  L = { queue: qs.map(q => ({ q, redo: false })), total: qs.length, i: 0, right: 0, answered: 0, xp: 0, combo: 0, missed: new Set() };
+  ask();
+}
+function ask(){
+  const item = L.queue[L.i], q = item.q;
+  const order = shuffle(q.o.map((_, k) => k));
+  L.order = order; L.sel = null;
+  const pct = Math.round(100 * L.answered / (L.total + L.missed.size));
+  $('#app').innerHTML = `
+  <div class="qhead"><button class="close" id="quit" aria-label="Sair da lição">✕</button><div class="prog"><i style="width:${pct}%"></i></div>${L.combo >= 3 ? `<span class="combo">${L.combo}× seguidas</span>` : ''}</div>
+  <section class="card">
+    <span class="tag ${item.redo ? 'redo' : ''}">${item.redo ? 'Revendo erro · ' : ''}${esc(q.t)} · cap. ${esc(q.cap)}</span>
+    <p class="qtext">${md(q.q)}</p>
+    ${q.code ? `<pre class="qcode">${esc(q.code)}</pre>` : ''}
+    <div class="opts" id="opts">${order.map((k, n) => `<button class="opt" data-k="${k}"><span class="k">${'ABCD'[n]}</span><span>${md(q.o[k])}</span></button>`).join('')}</div>
+    <div id="fb"></div>
+  </section>
+  <div class="row" style="margin-top:14px"><button class="btn" id="check" disabled>Verificar</button></div>`;
+  $('#quit').onclick = () => { L = null; render(); };
+  $('#opts').onclick = e => {
+    const b = e.target.closest('.opt'); if (!b || b.disabled) return;
+    document.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+    b.classList.add('sel'); L.sel = +b.dataset.k; $('#check').disabled = false;
+  };
+  $('#check').onclick = check;
+}
+function check(){
+  const item = L.queue[L.i], q = item.q, right = L.sel === q.a;
+  document.querySelectorAll('.opt').forEach(o => { o.disabled = true; const k = +o.dataset.k; if (k === q.a) o.classList.add('right'); else if (k === L.sel) o.classList.add('wrong'); });
+  L.answered++;
+  if (right) { L.right += item.redo ? 0 : 1; L.combo++; const g = 10 + (L.combo >= 3 ? 5 : 0); L.xp += item.redo ? 5 : g; }
+  else { L.combo = 0; if (!item.redo) { L.missed.add(q.id); L.queue.push({ q, redo: true }); } }
+  if (!item.redo) grade(q, right); else if (right) { /* acertou no reforço: fica na caixa 1, volta amanhã */ state.cards[q.id].due = addDays(today(), 1); }
+  $('#fb').innerHTML = `<div class="fb ${right ? 'ok' : 'bad'}"><h3>${right ? 'Isso!' : 'Quase.'}</h3>
+    ${right ? '' : `<p>Resposta: <b>${md(q.o[q.a])}</b></p>`}${q.e ? `<p>${md(q.e)}</p>` : ''}
+    <p class="gotoguide">No guia: capítulo ${esc(q.cap)}</p></div>`;
+  const b = $('#check'); b.textContent = 'Continuar'; b.className = 'btn ' + (right ? 'ok' : 'bad'); b.disabled = false;
+  b.onclick = next; b.focus();
+}
+function next(){
+  L.i++;
+  if (L.i < L.queue.length) return ask();
+  const first = bumpStreak();
+  state.xp += L.xp;
+  save(); header();
+  const acc = Math.round(100 * L.right / L.total);
+  $('#app').innerHTML = `
+  <section class="card stack" style="text-align:center">
+    <div class="label">Lição concluída</div>
+    <div class="big">+${L.xp} XP</div>
+    <p class="lead">${first ? 'Ofensiva de ' + state.streak + ' dia' + (state.streak > 1 ? 's' : '') + '. 🔥' : 'Ofensiva de hoje já estava garantida.'}</p>
+    <div class="grid3">
+      <div class="topic"><small>Acertos de primeira</small><b>${acc}%</b></div>
+      <div class="topic"><small>Erros revistos</small><b>${L.missed.size}</b></div>
+      <div class="topic"><small>Hoje</small><b>${state.days[today()] || 0}/${GOAL}</b></div>
+    </div>
+    ${L.missed.size ? `<p class="note">As que você errou voltam na lista "Refazer erros" e na revisão de amanhã.</p>` : ''}
+    <div class="row"><button class="btn" id="again">Mais uma lição</button><button class="btn ghost" id="home">Voltar ao início</button></div>
+  </section>`;
+  L = null;
+  $('#again').onclick = () => start('lesson');
+  $('#home').onclick = render;
+}
+
+/* ---------- boot ---------- */
+render();
+fetch('questions.json').then(r => r.json()).then(data => {
+  Q = data; byId = Object.fromEntries(Q.map(q => [q.id, q]));
+  if (!L) render();
+}).catch(() => { $('#app').innerHTML = '<div class="card">Não consegui carregar as perguntas. Recarregue a página.</div>'; });
+initStore();
+document.addEventListener('keydown', e => {
+  if (!L) return;
+  const k = '1234abcd'.indexOf(e.key.toLowerCase());
+  if (k >= 0) { const btns = document.querySelectorAll('.opt'); const b = btns[k % 4]; if (b && !b.disabled) b.click(); }
+  if (e.key === 'Enter') { const b = $('#check'); if (b && !b.disabled) { e.preventDefault(); b.click(); } }
+});
+</script>

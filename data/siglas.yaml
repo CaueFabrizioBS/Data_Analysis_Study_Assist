@@ -1,0 +1,181 @@
+# Dicionário de siglas. Ordenado automaticamente (A–Z) no build.
+
+- sigla: "AARRR"
+  significado: "Aquisição, Ativação, Retenção, Referência, Receita"
+  desc: "Framework das \"métricas pirata\", em forma de funil."
+  caps: ["8.4"]
+- sigla: "API"
+  significado: "Application Programming Interface"
+  desc: "Porta que um sistema abre para outros programas pedirem dados."
+  caps: ["5.4", "7.1"]
+- sigla: "ASC / DESC"
+  significado: "Ascending / Descending"
+  desc: "Ordem crescente / decrescente no ORDER BY."
+  caps: ["7.3"]
+- sigla: "ASL"
+  significado: "Average Session Length"
+  desc: "Duração média da sessão."
+  caps: ["8.4"]
+- sigla: "B2B / B2C"
+  significado: "Business to Business / Business to Consumer"
+  desc: "Vende para empresas / para pessoas."
+  caps: ["8.4"]
+- sigla: "CAC"
+  significado: "Customer Acquisition Cost"
+  desc: "Custo de aquisição de cliente."
+  caps: ["8.3", "9.1"]
+- sigla: "CJM"
+  significado: "Customer Journey Map"
+  desc: "Mapa da jornada do cliente."
+  caps: ["9.1"]
+- sigla: "CLI"
+  significado: "Command-Line Interface"
+  desc: "Linha de comando (terminal)."
+  caps: ["5.1"]
+- sigla: "COGS"
+  significado: "Cost of Goods Sold"
+  desc: "Custo da mercadoria vendida (custo primário)."
+  caps: ["8.3"]
+- sigla: "CR"
+  significado: "Conversion Rate"
+  desc: "Taxa de conversão (registros ÷ cliques)."
+  caps: ["8.1"]
+- sigla: "CSV"
+  significado: "Comma-Separated Values"
+  desc: "Arquivo de texto com valores separados por vírgula."
+  caps: ["2.4", "3.1"]
+- sigla: "CTR"
+  significado: "Click-Through Rate"
+  desc: "Taxa de cliques (cliques ÷ impressões)."
+  caps: ["8.1"]
+- sigla: "DAU"
+  significado: "Daily Active Users"
+  desc: "Usuários únicos ativos por dia."
+  caps: ["8.4"]
+- sigla: "DRE"
+  significado: "Demonstração do Resultado do Exercício"
+  desc: "Relatório contábil brasileiro com a escada do lucro."
+  caps: ["8.1"]
+- sigla: "EBIT"
+  significado: "Earnings Before Interest and Taxes"
+  desc: "Lucro operacional, antes de juros e impostos."
+  caps: ["8.1"]
+- sigla: "E.S.E."
+  significado: "Estimated Standard Error"
+  desc: "Erro padrão estimado (S ÷ √n)."
+  caps: ["4.3"]
+- sigla: "FK"
+  significado: "Foreign Key"
+  desc: "Chave estrangeira; guarda a PK de outra tabela."
+  caps: ["7.4"]
+- sigla: "GIGO"
+  significado: "Garbage In, Garbage Out"
+  desc: "Dado ruim na entrada, resultado ruim na saída."
+  caps: ["2.5"]
+- sigla: "H₀ / H₁"
+  significado: "Hipótese nula / hipótese alternativa"
+  caps: ["4.3"]
+- sigla: "HEART"
+  significado: "Happiness, Engagement, Adoption, Retention, Task success"
+  desc: "Framework de métricas de experiência do Google."
+  caps: ["8.4"]
+- sigla: "HTML"
+  significado: "HyperText Markup Language"
+  desc: "Linguagem das páginas web."
+  caps: ["7.1"]
+- sigla: "HTTP / HTTPS"
+  significado: "HyperText Transfer Protocol (Secure)"
+  desc: "Regras de transferência de dados na web; o S é a versão criptografada."
+  caps: ["7.1"]
+- sigla: "IDE"
+  significado: "Integrated Development Environment"
+  desc: "Ambiente de desenvolvimento integrado (ex.: VS Code)."
+  caps: ["5.2"]
+- sigla: "IQR"
+  significado: "Interquartile Range"
+  desc: "Intervalo interquartil (Q3 − Q1)."
+  caps: ["4.1"]
+- sigla: "JSON"
+  significado: "JavaScript Object Notation"
+  desc: "Formato de texto para dados estruturados, padrão das APIs."
+  caps: ["5.4", "7.1"]
+- sigla: "KPI"
+  significado: "Key Performance Indicator"
+  desc: "Indicador-chave de desempenho."
+  caps: ["8.4"]
+- sigla: "LTV"
+  significado: "Lifetime Value"
+  desc: "Lucro bruto que um cliente traz durante todo o tempo em que compra."
+  caps: ["8.3", "9.1"]
+- sigla: "MAR"
+  significado: "Missing At Random"
+  desc: "Ausente por um motivo ligado a outra coluna observada."
+  caps: ["3.2"]
+- sigla: "MAU"
+  significado: "Monthly Active Users"
+  desc: "Usuários únicos ativos por mês."
+  caps: ["8.4"]
+- sigla: "MCAR"
+  significado: "Missing Completely At Random"
+  desc: "Ausente totalmente ao acaso."
+  caps: ["3.2"]
+- sigla: "MNAR"
+  significado: "Missing Not At Random"
+  desc: "Ausente por causa do próprio valor (o caso mais difícil)."
+  caps: ["3.2"]
+- sigla: "NaN"
+  significado: "Not a Number"
+  desc: "Valor ausente do tipo float no pandas."
+  caps: ["3.2"]
+- sigla: "P&L"
+  significado: "Profit and Loss"
+  desc: "Relatório de lucros e perdas."
+  caps: ["9.1"]
+- sigla: "PEMDAS"
+  significado: "Parênteses, Expoentes, Multiplicação, Divisão, Adição, Subtração"
+  desc: "Ordem em que o Python resolve as operações."
+  caps: ["1.2"]
+- sigla: "PK"
+  significado: "Primary Key"
+  desc: "Chave primária; identifica cada linha, nunca repete nem fica vazia."
+  caps: ["7.2", "7.4"]
+- sigla: "ROAS"
+  significado: "Return On Ad Spend"
+  desc: "Retorno do gasto com uma campanha de anúncio."
+  caps: ["9.1"]
+- sigla: "ROI"
+  significado: "Return On Investment"
+  desc: "Retorno do investimento."
+  caps: ["8.1", "9.1"]
+- sigla: "ROMI"
+  significado: "Return On Marketing Investment"
+  desc: "Retorno do investimento em marketing."
+  caps: ["8.1", "8.3", "9.1"]
+- sigla: "RPV"
+  significado: "Revenue Per Visitor"
+  desc: "Receita por visitante."
+  caps: ["9.1"]
+- sigla: "SAC"
+  significado: "Split, Apply, Combine"
+  desc: "Dividir, aplicar, combinar; a lógica do groupby."
+  caps: ["3.7"]
+- sigla: "SQL"
+  significado: "Structured Query Language"
+  desc: "Linguagem de consulta a bancos de dados relacionais."
+  caps: ["7.2"]
+- sigla: "TCL"
+  significado: "Teorema Central do Limite"
+  desc: "Médias de muitas amostras formam uma distribuição normal."
+  caps: ["4.2", "4.3"]
+- sigla: "UX"
+  significado: "User Experience"
+  desc: "Experiência do usuário."
+  caps: ["8.4", "9.1"]
+- sigla: "WAU"
+  significado: "Weekly Active Users"
+  desc: "Usuários únicos ativos por semana."
+  caps: ["8.4"]
+- sigla: "YAML"
+  significado: "YAML Ain't Markup Language"
+  desc: "Formato de dados mais legível que o JSON, usado em configurações."
+  caps: ["5.4"]

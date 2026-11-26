@@ -1,0 +1,48 @@
+/* ---------- parte "caderno": notas à mão, ícones e desenhos ---------- */
+/* a letra do Cauê, gerada por build/fonte_caue.py a partir da folha do Calligraphr.
+   O HTML fica em build/out/, por isso o caminho começa com ../ */
+@font-face {
+  font-family: "Letra do Caue";
+  src: url("../fontes/LetraCaue.ttf") format("truetype");
+}
+:root {
+  /* caractere que a letra não tem (setas, ✎) cai na Ink Free */
+  --hand: "Letra do Caue", "Ink Free", "Segoe Print", cursive;
+  --ink-blue: #2b59c3; --ink-red: #e0453a; --ink-green: #2f9e44;
+}
+
+/* ícone no título dos cards */
+.card-t { display: flex; align-items: center; gap: 6px; }
+.card-t .ico { width: 15px; height: 15px; flex: none; }
+
+/* rabisco do capítulo, à direita do título */
+.chapter > h1 { display: flex; align-items: center; }
+.chapter > h1 .cap-doodle { width: 46px; height: 46px; margin-left: auto; flex: none; transform: rotate(-6deg); }
+
+/* nota de correção: papelzinho colado com fita, escrito à mão */
+.corrigido {
+  position: relative; margin: 18px 6px 16px 18px; padding: 14px 18px 10px;
+  background-color: #fffbea;
+  /* pauta: uma linha embaixo de cada linha de texto (26px) */
+  background-image: repeating-linear-gradient(to bottom, transparent 0 25px, #e8e1c4 25px 26px);
+  background-origin: content-box; background-clip: padding-box;
+  border-left: 3px solid var(--ink-red);
+  box-shadow: 2px 3px 0 rgba(0,0,0,.08);
+  transform: rotate(-0.6deg); break-inside: avoid;
+  font-family: var(--hand); font-size: 14pt; line-height: 26px; color: #1d3a8a;
+}
+.corrigido > * { line-height: 26px; }
+.corrigido .fita {
+  position: absolute; top: -8px; left: 40%; width: 70px; height: 16px;
+  background: rgba(242, 183, 5, .45); transform: rotate(3deg);
+}
+.corrigido .corr-t { color: var(--ink-red); font-size: 15.5pt; }
+.corrigido p { margin: 0; }
+.corrigido code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 9.5pt; background: rgba(255,255,255,.7); color: #1d3a8a; }
+.corrigido strong { color: var(--ink-red); font-weight: normal; text-decoration: underline wavy var(--ink-red); text-underline-offset: 3px; }
+
+/* desenhos */
+figure.desenho { margin: 12px auto 16px; text-align: center; break-inside: avoid; }
+figure.desenho svg { max-width: 100%; height: auto; }
+figure.desenho figcaption { font-family: var(--hand); font-size: 12pt; color: var(--ink-red); margin-top: 2px; }
+.falta-desenho { color: #b91c1c; font-weight: 700; }

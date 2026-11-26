@@ -1,0 +1,212 @@
+# Dicionário de fórmulas. Ordenado automaticamente (A–Z) no build.
+# formula: uma expressão por linha. "a // b" vira fração (a em cima, b embaixo).
+# caps: capítulos onde a fórmula é explicada.
+
+- nome: Assimetria (leitura rápida)
+  formula: |
+    Média > mediana → assimetria positiva (cauda à direita)
+    Média < mediana → assimetria negativa (cauda à esquerda)
+  caps: ["4.1"]
+
+- nome: CAC (custo de aquisição de cliente)
+  formula: "CAC = gasto com marketing // clientes novos"
+  legenda: "Gastou R$ 800 e vieram 10 clientes: CAC = R$ 80."
+  caps: ["8.3", "9.1"]
+
+- nome: Cancelamento (churn rate)
+  formula: |
+    Razão = ativos na semana n // ativos na semana n−1
+    Cancelamento (%) = (razão − 1) × 100
+  legenda: "700 ativos depois de 1.000: 700 ÷ 1.000 − 1 = −30%. Em pandas: `groupby(coorte)['user_id'].pct_change()`."
+  caps: ["8.2"]
+
+- nome: Combinação
+  formula: "C(n, k) = n! // k!(n − k)!"
+  legenda: "n = itens disponíveis, k = itens escolhidos; a ordem não importa. 3 sabores entre 10: C(10, 3) = 120. Python: `math.comb(n, k)`."
+  caps: ["4.2"]
+
+- nome: Conversão (taxa de)
+  formula: "Conversão = compradores // visitantes"
+  legenda: "555 ÷ 22.755 = 2,439%. Transforme a porcentagem em decimal antes de multiplicar ou dividir."
+  caps: ["3.2", "8.1", "9.1"]
+
+- nome: Conversão do funil
+  formula: |
+    Conversão total = etapa // primeira etapa
+    Para a próxima etapa = etapa // etapa anterior
+  legenda: "Carrinho: 3.000 ÷ 10.000 = 30% do total; 3.000 ÷ 8.000 = 37,5% de quem viu o produto."
+  caps: ["8.1"]
+
+- nome: Covariância
+  formula: "Cov(x, y) = Σ (xᵢ − x̄)(yᵢ − ȳ) // n"
+  legenda: "Positiva: andam juntas. Negativa: sentidos opostos. Perto de 0: sem relação linear. Python: `np.cov(x, y)[0][1]`."
+  caps: ["4.1"]
+
+- nome: CR (taxa de conversão do clique)
+  formula: "CR (%) = registros // cliques"
+  legenda: "6 ÷ 61 × 100 = 9,84%. Baixo: problema depois do clique (página, formulário)."
+  caps: ["8.1"]
+
+- nome: CTR (taxa de cliques)
+  formula: "CTR (%) = cliques // impressões"
+  legenda: "61 ÷ 6.153 × 100 = 0,99%. Baixo: problema no anúncio."
+  caps: ["8.1"]
+
+- nome: Densidade de frequência
+  formula: "Densidade = frequência // largura da faixa"
+  legenda: "No histograma de densidade, a área da barra é a frequência."
+  caps: ["4.1"]
+
+- nome: Desvio padrão (σ)
+  formula: "σ = √( Σ (xᵢ − μ)² // n )"
+  legenda: "Raiz da variância; volta para a unidade original. `np.std` divide por n; `pandas.std()` divide por n − 1."
+  caps: ["4.1"]
+
+- nome: Distribuição binomial
+  formula: |
+    Uma ordem específica = pᵏ × qⁿ⁻ᵏ
+    Qualquer ordem = C(n, k) × pᵏ × qⁿ⁻ᵏ
+  legenda: "p = chance de sucesso, q = 1 − p, n = tentativas, k = sucessos. 7 raspadinhas premiadas em 10 com p = 0,88: 8,47%."
+  caps: ["4.2"]
+
+- nome: Erro padrão estimado (E.S.E.)
+  formula: "E.S.E. = S // √n"
+  legenda: "S = desvio padrão estimado, n = tamanho da amostra. Amostra 4× maior, erro pela metade."
+  caps: ["4.3"]
+
+- nome: IQR e limites de outlier
+  formula: |
+    IQR = Q3 − Q1
+    Limite superior = Q3 + 1,5 × IQR
+    Limite inferior = Q1 − 1,5 × IQR
+  legenda: "Q1 = 25, Q3 = 41: IQR = 16, limite superior = 65."
+  caps: ["4.1"]
+
+- nome: Lucro bruto (LB)
+  formula: "LB = receita − custo primário"
+  legenda: "1.000.000 − 300.000 = 700.000."
+  caps: ["8.1"]
+
+- nome: Lucro líquido (LL)
+  formula: "LL = lucro operacional − impostos e empréstimos"
+  caps: ["8.1"]
+
+- nome: Lucro operacional (EBIT)
+  formula: "LO = lucro bruto − custos operacionais"
+  caps: ["8.1"]
+
+- nome: LTV (valor do tempo de vida do cliente)
+  formula: "LTV = lucro bruto da coorte // clientes da coorte"
+  legenda: "Somado ao longo dos meses de vida. Regra de ouro: LTV > CAC."
+  caps: ["8.3", "9.1"]
+
+- nome: Margem bruta
+  formula: "Margem bruta = lucro bruto // receita"
+  caps: ["8.1"]
+
+- nome: Margem de contribuição
+  formula: "Margem de contribuição = preço − custo variável por unidade"
+  legenda: "Bicicleta: 200 − 170 = 30 de sobra por unidade."
+  caps: ["8.3"]
+
+- nome: Margem operacional
+  formula: "Margem operacional = lucro operacional // receita"
+  caps: ["8.1"]
+
+- nome: Média (μ)
+  formula: "μ = Σ xᵢ // n"
+  caps: ["4.1"]
+
+- nome: Normal aproximando a binomial
+  formula: |
+    μ = n × p
+    σ = √(n × p × (1 − p))
+  legenda: "5.000 impressões com 15% de cliques: μ = 750. Chance de 715 ou menos: `st.norm(mu, sigma).cdf(715)` ≈ 8,3%."
+  caps: ["4.2"]
+
+- nome: Permutação
+  formula: "P = n! = 1 × 2 × … × n"
+  legenda: "A ordem importa. 3 bolinhas: 3! = 6. Python: `math.factorial(n)`."
+  caps: ["4.2"]
+
+- nome: Ponto de equilíbrio
+  formula: "Ponto de equilíbrio = custos fixos // preço − custo variável por unidade"
+  legenda: "Bicicleta: 3.000 ÷ 30 = 100 unidades."
+  caps: ["8.3"]
+
+- nome: Porcentagem
+  formula: "Porcentagem (%) = parte // todo"
+  legenda: "Parcela de falantes nativos: 64,8 ÷ 67,8 × 100 = 95,6%."
+  caps: ["1.2"]
+
+- nome: Probabilidade de um evento
+  formula: "P(A) = resultados que satisfazem A // total de resultados"
+  legenda: "Soma 5 com dois dados: 4 ÷ 36."
+  caps: ["4.2"]
+
+- nome: Probabilidade de eventos independentes
+  formula: "P(A e B) = P(A) × P(B)"
+  legenda: "Cara na moeda e par no dado: 1/2 × 3/6 = 1/4."
+  caps: ["4.2"]
+
+- nome: Receita (decomposição)
+  formula: |
+    Receita = usuários × conversão × ticket médio
+    Receita = nº de compras × ticket médio
+    Receita = usuários × RPV
+  caps: ["9.1"]
+
+- nome: Regra dos três sigmas
+  formula: "≈ 99,7% dos valores em (μ − 3σ, μ + 3σ)"
+  legenda: "68% em μ ± 1σ, 95% em μ ± 2σ."
+  caps: ["4.1", "4.2"]
+
+- nome: Retenção
+  formula: "Retenção (%) = ativos na semana n // ativos na semana 0"
+  legenda: "500 ativos de uma coorte de 1.000: 50%."
+  caps: ["8.2"]
+
+- nome: ROAS (retorno do gasto com anúncio)
+  formula: "ROAS (%) = receita da campanha // custo da campanha"
+  legenda: "Empate em 100%: ROAS de 80% é prejuízo."
+  caps: ["9.1"]
+
+- nome: ROI (retorno do investimento)
+  formula: |
+    ROI = (lucro líquido − investimento) // investimento
+    ROI (%) = (receita − custos) // custos
+  legenda: "A primeira é a do Sprint 8 (negócio inteiro); a segunda, do Sprint 9. Empate em 0%."
+  caps: ["8.1", "9.1"]
+
+- nome: ROMI (retorno do investimento em marketing)
+  formula: |
+    ROMI = (receita − marketing) // marketing
+    ROMI = lucro bruto // marketing
+    ROMI = LTV // CAC
+  legenda: "A primeira empata em 0%; as outras duas empatam em 100% (ou 1). Pergunte qual a empresa usa antes de comparar."
+  caps: ["8.1", "8.3", "9.1"]
+
+- nome: RPV (receita por visitante)
+  formula: "RPV = receita // visitantes"
+  legenda: "R$ 3.000 ÷ 2.000 visitantes = R$ 1,50."
+  caps: ["9.1"]
+
+- nome: Sessões por usuário
+  formula: "Sessões por usuário = nº de sessões // nº de usuários únicos"
+  caps: ["8.4"]
+
+- nome: Sticky factor (fator de grude)
+  formula: |
+    Sticky semanal (%) = DAU // WAU
+    Sticky mensal (%) = DAU // MAU
+  legenda: "1.536 ÷ 8.297 = 18,5%."
+  caps: ["8.4"]
+
+- nome: Ticket médio
+  formula: "Ticket médio = receita // nº de compras"
+  caps: ["9.1"]
+
+- nome: Variância (σ²)
+  formula: "σ² = Σ (xᵢ − μ)² // n"
+  legenda: "Média das distâncias ao quadrado. Python: `np.var(x)` (n) ou `np.var(x, ddof=1)` (n − 1)."
+  caps: ["4.1"]
