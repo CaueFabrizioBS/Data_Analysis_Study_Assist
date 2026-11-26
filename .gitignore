@@ -1,0 +1,5 @@
+# cópia local para testar; no site o workflow copia de quiz/questions.json
+app/questions.json
+# saídas intermediárias do build do PDF
+build/out/
+app/guia.pdf

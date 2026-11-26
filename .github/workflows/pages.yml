@@ -1,0 +1,40 @@
+# Publica o app Ofensiva de Dados (pasta app/) no GitHub Pages.
+# Roda a cada push na main que mexa no app, no banco de perguntas ou no guia.
+name: Publicar app no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["app/**", "quiz/questions.json", "Guia_de_Estudos_DA.pdf", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Montar o site
+        run: |
+          mkdir -p site
+          cp -r app/. site/
+          cp quiz/questions.json site/questions.json   # fonte única das perguntas
+          cp Guia_de_Estudos_DA.pdf site/guia.pdf
+          rm -f site/icons/*.svg
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

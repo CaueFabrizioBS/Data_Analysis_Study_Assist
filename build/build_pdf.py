@@ -424,7 +424,41 @@ def main():
     raw_pdf = build_dir / "guia_raw.pdf"
     print_pdf(html_path, raw_pdf)
     n = postprocess(raw_pdf, toc, OUT_PDF)
+    fixed_links = pymupdf.open(OUT_PDF)
+    named_to_page_links(fixed_links)
+    fixed_links.save(OUT_PDF, incremental=True, encryption=pymupdf.PDF_ENCRYPT_KEEP)
+    fixed_links.close()
     print(f"ok: {OUT_PDF.name} ({n} páginas)")
+    copy_to_drive()
+
+
+def named_to_page_links(doc):
+    """O Chrome grava os links internos como destinos com nome (#c2-2).
+    Vários leitores (Drive, navegadores, alguns apps de celular) não seguem
+    esse tipo. Troca cada um por um link direto para página + posição."""
+    for page in doc:
+        named = [l for l in page.get_links()
+                 if l.get("kind") == pymupdf.LINK_NAMED and l.get("page", -1) >= 0]
+        for link in named:
+            page.delete_link(link)
+        for link in named:
+            page.insert_link({"kind": pymupdf.LINK_GOTO, "from": link["from"],
+                              "page": link["page"],
+                              "to": link.get("to") or pymupdf.Point(0, 0), "zoom": 0})
+
+
+# Cópia no Google Drive (pasta sincronizada pelo Drive para computador).
+# Fica numa subpasta para não se misturar com as anotações dos capítulos.
+DRIVE_DIR = Path(r"G:\My Drive\Triple Ten\Guia de Estudos")
+
+
+def copy_to_drive():
+    if not DRIVE_DIR.parent.exists():
+        print("! Drive não encontrado; cópia não atualizada", file=sys.stderr)
+        return
+    DRIVE_DIR.mkdir(exist_ok=True)
+    shutil.copy2(OUT_PDF, DRIVE_DIR / OUT_PDF.name)
+    print(f"ok: cópia atualizada em {DRIVE_DIR}")
 
 
 if __name__ == "__main__":
