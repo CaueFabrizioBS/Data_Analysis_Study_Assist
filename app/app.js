@@ -73,7 +73,7 @@ async function initCloud() {
     const auth = authM.getAuth(app);
     const db = fsM.initializeFirestore(app, { localCache: fsM.persistentLocalCache() });
     cloud.api = { ...authM, ...fsM, auth, db };
-    try { await authM.getRedirectResult(auth); } catch { }
+    try { await authM.getRedirectResult(auth); } catch (e) { setStatus(authMsg(e && e.code)); }
     let unsub = null;
     authM.onAuthStateChanged(auth, user => {
       cloud.user = user;
@@ -104,8 +104,17 @@ async function signIn() {
   try { await signInWithPopup(auth, provider); }
   catch (e) {
     if (e && (e.code === 'auth/popup-blocked' || e.code === 'auth/operation-not-supported-in-this-environment' || e.code === 'auth/cancelled-popup-request')) await signInWithRedirect(auth, provider);
-    else if (!(e && e.code === 'auth/popup-closed-by-user')) setStatus('Não deu para entrar: ' + (e.code || 'erro'));
+    else if (!(e && e.code === 'auth/popup-closed-by-user')) setStatus(authMsg(e && e.code));
   }
+}
+function authMsg(code) {
+  const m = {
+    'auth/operation-not-allowed': 'O login com Google não está ativado no Firebase (Authentication > Método de login > Google).',
+    'auth/configuration-not-found': 'O login com Google não está ativado no Firebase (Authentication > Método de login > Google).',
+    'auth/unauthorized-domain': 'Este endereço não está nos domínios autorizados do Firebase.',
+    'auth/network-request-failed': 'Sem internet para entrar agora.',
+  };
+  return 'Não deu para entrar: ' + (m[code] || code || 'erro desconhecido');
 }
 
 function setStatus(t) { cloud.status = t; const el = $('#sync'); if (el) el.textContent = t; }
@@ -114,7 +123,7 @@ function renderAccount(msg) {
   if (!cloud.enabled) { el.innerHTML = `<span>${esc(msg || 'Progresso salvo neste aparelho.')}</span>`; return; }
   if (!cloud.api) { el.innerHTML = '<span>Conectando…</span>'; return; }
   if (!cloud.user) {
-    el.innerHTML = `<button class="gbtn" id="login"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2.1 5-4.4 6.6v5.5h7.1c4.2-3.9 6.5-9.6 6.5-16.1z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.2-9H4.5v5.7C8.1 41.1 15.5 46 24 46z"/><path fill="#FBBC05" d="M11.8 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.5A21.9 21.9 0 0 0 2 24c0 3.5.8 6.9 2.5 9.9l7.3-5.7z"/><path fill="#EA4335" d="M24 10.8c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.5 2 8.1 6.9 4.5 14.1l7.3 5.7c1.7-5.2 6.5-9 12.2-9z"/></svg>Entrar com Google para sincronizar</button>`;
+    el.innerHTML = `<button class="gbtn" id="login"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M45 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h11.8c-.5 2.7-2.1 5-4.4 6.6v5.5h7.1c4.2-3.9 6.5-9.6 6.5-16.1z"/><path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.4l-7.1-5.5c-2 1.3-4.5 2.1-7.4 2.1-5.7 0-10.5-3.8-12.2-9H4.5v5.7C8.1 41.1 15.5 46 24 46z"/><path fill="#FBBC05" d="M11.8 28.2c-.4-1.3-.7-2.7-.7-4.2s.3-2.9.7-4.2v-5.7H4.5A21.9 21.9 0 0 0 2 24c0 3.5.8 6.9 2.5 9.9l7.3-5.7z"/><path fill="#EA4335" d="M24 10.8c3.2 0 6.1 1.1 8.4 3.3l6.3-6.3C34.9 4.2 29.9 2 24 2 15.5 2 8.1 6.9 4.5 14.1l7.3 5.7c1.7-5.2 6.5-9 12.2-9z"/></svg>Entrar com Google para sincronizar</button><span id="sync" class="authmsg">${esc(cloud.status || '')}</span>`;
     $('#login').onclick = signIn;
     return;
   }
@@ -284,6 +293,14 @@ fetch('questions.json', { cache: 'no-cache' }).then(r => r.json()).then(data => 
   .catch(() => { $('#app').innerHTML = '<div class="card">Não consegui carregar as perguntas. Confira a internet e abra de novo.</div>'; });
 initCloud();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { });
+// Botão "Instalar app": aparece quando o Chrome diz que dá para instalar.
+let installEvt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); installEvt = e;
+  const b = $('#install'); b.hidden = false;
+  b.onclick = async () => { installEvt.prompt(); await installEvt.userChoice; installEvt = null; b.hidden = true; };
+});
+window.addEventListener('appinstalled', () => { $('#install').hidden = true; });
 document.addEventListener('keydown', e => {
   if (!L) return;
   const k = '1234abcd'.indexOf(e.key.toLowerCase());

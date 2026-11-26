@@ -98,3 +98,6 @@ pre.qcode{background:var(--code);border-radius:12px;padding:12px 14px;font-size:
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
 .fb{animation:pop .25s ease-out}
+[hidden]{display:none!important}
+.authmsg{flex-basis:100%}
+.authmsg:empty{display:none}
