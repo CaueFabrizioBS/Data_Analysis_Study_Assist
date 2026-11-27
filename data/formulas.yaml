@@ -28,7 +28,7 @@
 - nome: Conversão (taxa de)
   formula: "Conversão = compradores // visitantes"
   legenda: "555 ÷ 22.755 = 2,439%. Transforme a porcentagem em decimal antes de multiplicar ou dividir."
-  caps: ["3.2", "8.1", "9.1"]
+  caps: ["3.2", "8.1", "9.1", "9.2"]
 
 - nome: Conversão do funil
   formula: |
@@ -210,3 +210,7 @@
   formula: "σ² = Σ (xᵢ − μ)² // n"
   legenda: "Média das distâncias ao quadrado. Python: `np.var(x)` (n) ou `np.var(x, ddof=1)` (n − 1)."
   caps: ["4.1"]
+- nome: Diferença entre grupos (teste A/B)
+  formula: "Diferença absoluta (p.p.) = conversão B − conversão A\nRazão = conversão B // conversão A\nDiferença relativa (%) = (razão − 1) × 100\n"
+  legenda: "A 1,05% e B 1,25%: 0,20 ponto percentual, ou 1,25 ÷ 1,05 = 1,19 → 19% a mais. Os dois jeitos estão certos; diga qual está usando."
+  caps: ["9.2"]

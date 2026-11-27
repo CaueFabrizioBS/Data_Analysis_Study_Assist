@@ -291,3 +291,14 @@
   sig: "re.sub(r'padrao', novo, texto)"
   uso: "Troca tudo que bate com o padrão."
   busca: "re.sub("
+
+# ---------------- funções rápidas e arredondamento
+- nome: "lambda"
+  lib: "Python"
+  sig: "lambda x: x * 100  ·  lambda x: 'boa' if x > 0.012 else 'fraca'"
+  uso: "Função pequena e sem nome, montada na hora. Faz o que vem depois dos dois pontos. Costuma ir dentro de map ou apply."
+  busca: "lambda "
+- nome: "round"
+  lib: "pandas / Python"
+  sig: "s.round(4)  ·  round(numero, 4)"
+  uso: "Arredonda e continua número. Diferente do .format, que transforma em texto."

@@ -170,7 +170,7 @@
 - sigla: "UX"
   significado: "User Experience"
   desc: "Experiência do usuário."
-  caps: ["8.4", "9.1"]
+  caps: ["8.4", "9.1", "9.2"]
 - sigla: "WAU"
   significado: "Weekly Active Users"
   desc: "Usuários únicos ativos por semana."
@@ -179,3 +179,11 @@
   significado: "YAML Ain't Markup Language"
   desc: "Formato de dados mais legível que o JSON, usado em configurações."
   caps: ["5.4"]
+- sigla: "p.p."
+  significado: "Ponto percentual"
+  desc: "Diferença direta entre duas porcentagens: de 1% para 1,25% são 0,25 p.p. (e 25% a mais)."
+  caps: ["9.2"]
+- sigla: "A/B (teste)"
+  significado: "Grupo A (controle) × grupo B (teste)"
+  desc: "Experimento que divide os usuários ao acaso e compara a versão nova (B) com a original (A)."
+  caps: ["9.2"]
