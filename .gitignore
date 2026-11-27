@@ -3,3 +3,6 @@ app/questions.json
 # saídas intermediárias do build do PDF
 build/out/
 app/guia.pdf
+
+# Telegram (token e estado do robô)
+desk/.telegram*
