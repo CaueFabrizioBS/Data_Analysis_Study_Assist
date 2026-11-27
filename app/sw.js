@@ -1,6 +1,6 @@
 // Service worker: deixa o app abrir sem internet.
 // Arquivos do app: rede primeiro (pega a versão nova), cache como reserva.
-const CACHE = 'ofensiva-v2';
+const CACHE = 'ofensiva-v3';
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'firebase-config.js', 'questions.json', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
