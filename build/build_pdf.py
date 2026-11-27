@@ -260,6 +260,45 @@ def siglas_html(chapters_by_cap, toc):
     return "".join(parts)
 
 
+def metodos_html(chapters, chapters_by_cap, toc):
+    path = DATA / "metodos.yaml"
+    items = yaml.safe_load(path.read_text(encoding="utf-8")) if path.exists() else []
+    items = sorted(items or [], key=lambda x: sort_key(x["nome"]))
+    toc.append((1, "Dicionário de métodos", "metodos"))
+    parts = ['<section class="dict" id="metodos"><div class="tag">Consulta rápida</div>'
+             "<h1>Dicionário de métodos</h1>"
+             '<p class="lead">A chamada com os parâmetros mais usados (não todos) e, embaixo, para que serve. '
+             "Os números à direita levam aos capítulos onde o método aparece.</p>"]
+    current = None
+    for it in items:
+        L = letter_of(it["nome"])
+        if L != current:
+            if current is not None:
+                parts.append("</table>")
+            current = L
+            lid = f"m-{L}"
+            parts.append(f'<h2 class="letter" id="{lid}">{L}</h2><table class="metodos">')
+            toc.append((3, L, lid))
+        if "busca" in it:
+            needles = [it["busca"]]
+        else:
+            base = it["nome"].split(" ")[0]
+            needles = [f".{base}(", f"{base}("]
+        caps = [c["cap"] for c in chapters if any(n in c["body"] for n in needles)][:4]
+        refs = ", ".join(chapter_link(r, chapters_by_cap) for r in caps)
+        parts.append(
+            f'<tr><td><div class="mhead"><span class="mname">{html.escape(it["nome"])}</span>'
+            f'<span class="mlib">{html.escape(it.get("lib", ""))}</span></div>'
+            f'<code class="msig">{html.escape(it["sig"])}</code>'
+            f'<div class="desc">{md(it["uso"])[3:-4]}</div></td>'
+            f'<td class="fref">{refs}</td></tr>'
+        )
+    if current is not None:
+        parts.append("</table>")
+    parts.append("</section>")
+    return "".join(parts)
+
+
 # ------------------------------------------------------------------ html
 def build_html():
     chapters = read_chapters()
@@ -275,12 +314,13 @@ def build_html():
         body.append(chapter_html(ch, toc))
     body.append(formulas_html(by_cap, toc))
     body.append(siglas_html(by_cap, toc))
+    body.append(metodos_html(chapters, by_cap, toc))
 
     # sumário: sprint e capítulo sempre; seções (nível 3) dos capítulos também,
     # letras dos dicionários não (ficam só nos marcadores do PDF)
     toc_items = []
     for lvl, title, anchor in toc:
-        if lvl == 3 and (anchor.startswith("f-") or anchor.startswith("s-")):
+        if lvl == 3 and anchor[:2] in ("f-", "s-", "m-"):
             continue
         toc_items.append(
             f'<a class="toc l{lvl}" href="#{anchor}" data-anchor="{anchor}">'
@@ -291,7 +331,7 @@ def build_html():
         '<section class="cover"><div class="tag">TripleTen · Analista de Dados</div>'
         "<h1>Guia de Estudos</h1>"
         '<p class="sub">Python, pandas, estatística, SQL e métricas de negócio.<br>'
-        "Reorganizado a partir das anotações dos sprints, com dicionário de fórmulas e de siglas no fim.</p>"
+        "Reorganizado a partir das anotações dos sprints, com dicionários de fórmulas, siglas e métodos no fim.</p>"
         '<p class="how">Clique em qualquer item do sumário para ir ao assunto. '
         'Em todas as páginas, o botão <b>Sumário</b> no canto de cima leva de volta.</p></section>'
     )
@@ -323,7 +363,7 @@ def postprocess(pdf_path: Path, toc, out_path: Path):
 
     # página de cada âncora, a partir dos links do sumário
     # os links do sumário aparecem na mesma ordem de toc (sem as letras)
-    toc_no_letters = [t for t in toc if not (t[0] == 3 and t[2][:2] in ("f-", "s-"))]
+    toc_no_letters = [t for t in toc if not (t[0] == 3 and t[2][:2] in ("f-", "s-", "m-"))]
     toc_pages = []
     anchor_page = {}
     found = 0
@@ -376,6 +416,7 @@ def postprocess(pdf_path: Path, toc, out_path: Path):
 
     find_letter_pages("formulas", "f-")
     find_letter_pages("siglas", "s-")
+    find_letter_pages("metodos", "m-")
 
     # botão Sumário + rodapé
     for pno in range(len(doc)):
